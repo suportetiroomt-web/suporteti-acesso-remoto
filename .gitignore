@@ -1,0 +1,10 @@
+artifacts/
+build/
+*.user
+*.suo
+*.pfx
+*.p12
+*.snk
+*.cer
+*.key
+*.pem
