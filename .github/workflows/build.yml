@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Build and verify upstream RustDesk
         shell: powershell
@@ -28,7 +28,7 @@ jobs:
           "$hash  SuporteTI-AcessoRemoto.exe" | Set-Content ./artifacts/SHA256SUMS.txt -Encoding ascii
 
       - name: Upload unsigned artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: SuporteTI-AcessoRemoto-unsigned
           path: artifacts/
