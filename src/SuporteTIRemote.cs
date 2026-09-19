@@ -5,6 +5,8 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace SuporteTIRemote
@@ -27,6 +29,10 @@ namespace SuporteTIRemote
         private readonly List<Process> ownedProcesses = new List<Process>();
         private IntPtr embeddedWindow = IntPtr.Zero;
         private string payloadPath;
+        private string rustDeskConfigPath;
+        private string originalRustDeskConfig;
+        private bool originalRustDeskConfigExisted;
+        private bool compatibilityConfigPrepared;
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr SetParent(IntPtr child, IntPtr newParent);
@@ -137,6 +143,7 @@ namespace SuporteTIRemote
                 Directory.CreateDirectory(dir);
                 payloadPath = Path.Combine(dir, "SuporteTI-qs-rustdesk-licensed-9Jybm5WaukGdlRncvBXdz5iclZnclNnI6ISehxWZyJCLiIiOikGchJCLi8mZulmLpRXZ0J3bwV3cuIXZ2JXZzJiOiQ3cvhmIsISPzpXMZZlZ2h1UDd2VydlYLl0T15WOtpFT0w2MQNGONZkRBF0apdGeycWUyIiOikXZrJye.exe");
                 ExtractPayload(payloadPath);
+                PrepareCompatibilityConfig();
                 var process = Process.Start(new ProcessStartInfo(payloadPath) { UseShellExecute = true });
                 if (process != null) ownedProcesses.Add(process);
                 attachTimer.Start();
@@ -170,6 +177,47 @@ namespace SuporteTIRemote
             }
         }
 
+        private void PrepareCompatibilityConfig()
+        {
+            var roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var configDirectory = Path.Combine(roaming, "RustDesk", "config");
+            Directory.CreateDirectory(configDirectory);
+            rustDeskConfigPath = Path.Combine(configDirectory, "RustDesk2.toml");
+            originalRustDeskConfigExisted = File.Exists(rustDeskConfigPath);
+            originalRustDeskConfig = originalRustDeskConfigExisted
+                ? File.ReadAllText(rustDeskConfigPath, Encoding.UTF8)
+                : string.Empty;
+
+            var compatible = SetTomlOption(originalRustDeskConfig, "enable-hwcodec", "N");
+            compatible = SetTomlOption(compatible, "enable-directx-capture", "N");
+            File.WriteAllText(rustDeskConfigPath, compatible, new UTF8Encoding(false));
+            compatibilityConfigPrepared = true;
+        }
+
+        private static string SetTomlOption(string content, string key, string value)
+        {
+            var newline = content.Contains("\r\n") ? "\r\n" : "\n";
+            var optionLine = key + " = '" + value + "'";
+            var keyPattern = @"(?m)^\s*" + Regex.Escape(key) + @"\s*=.*$";
+            if (Regex.IsMatch(content, keyPattern))
+                return new Regex(keyPattern).Replace(content, optionLine, 1);
+
+            var options = Regex.Match(content, @"(?m)^\[options\]\s*$");
+            if (!options.Success)
+            {
+                if (content.Length > 0 && !content.EndsWith("\n")) content += newline;
+                return content + newline + "[options]" + newline + optionLine + newline;
+            }
+
+            var sectionStart = options.Index + options.Length;
+            var nextSection = Regex.Match(content.Substring(sectionStart), @"(?m)^\[[^\]]+\]\s*$");
+            var insertAt = nextSection.Success ? sectionStart + nextSection.Index : content.Length;
+            var prefix = content.Substring(0, insertAt);
+            var suffix = content.Substring(insertAt);
+            if (!prefix.EndsWith("\n")) prefix += newline;
+            return prefix + optionLine + newline + suffix;
+        }
+
         private void AttachRustDeskWindow()
         {
             if (embeddedWindow != IntPtr.Zero) return;
@@ -201,8 +249,28 @@ namespace SuporteTIRemote
             attachTimer.Stop();
             foreach (var process in ownedProcesses)
             {
-                try { if (!process.HasExited) process.Kill(); } catch { }
+                try
+                {
+                    if (!process.HasExited) process.Kill();
+                    process.WaitForExit(2000);
+                }
+                catch { }
             }
+            RestoreCompatibilityConfig();
+        }
+
+        private void RestoreCompatibilityConfig()
+        {
+            if (!compatibilityConfigPrepared || string.IsNullOrEmpty(rustDeskConfigPath)) return;
+            try
+            {
+                if (originalRustDeskConfigExisted)
+                    File.WriteAllText(rustDeskConfigPath, originalRustDeskConfig, new UTF8Encoding(false));
+                else if (File.Exists(rustDeskConfigPath))
+                    File.Delete(rustDeskConfigPath);
+            }
+            catch { }
+            compatibilityConfigPrepared = false;
         }
 
         [STAThread]

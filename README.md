@@ -15,6 +15,7 @@ Configuração de rede incorporada e auditável:
 - O acesso só ocorre quando o usuário abre o aplicativo e fornece voluntariamente o ID e a senha temporária ao técnico.
 - A senha é gerada pelo RustDesk e muda ao reiniciar o cliente.
 - O aplicativo não instala serviço permanente, não cria acesso desassistido e não altera configurações do Windows.
+- Durante a sessão, o inicializador desativa temporariamente a codificação de vídeo por hardware e a captura DirectX para evitar o estado “Conectado, aguardando imagem” em computadores com drivers ou monitores incompatíveis. A configuração anterior é restaurada ao fechar o aplicativo.
 - O inicializador encerra somente o processo que ele próprio iniciou ao fechar sua janela.
 - O tráfego utiliza o servidor privado configurado da Suporte TI.
 - O aplicativo não contém senha de acesso desassistido, chave privada ou credencial administrativa.
