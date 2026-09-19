@@ -6,6 +6,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Suporte TI")]
 [assembly: AssemblyProduct("Suporte TI - Acesso Remoto")]
 [assembly: AssemblyCopyright("Copyright © Suporte TI 2026")]
-[assembly: AssemblyVersion("1.0.1.0")]
-[assembly: AssemblyFileVersion("1.0.1.0")]
+[assembly: AssemblyVersion("1.0.2.0")]
+[assembly: AssemblyFileVersion("1.0.2.0")]
 [assembly: ComVisible(false)]

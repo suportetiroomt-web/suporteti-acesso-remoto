@@ -8,6 +8,8 @@ O destino de rede configurado é `server.suporteti.info`, operado pela Suporte T
 
 Durante uma sessão autorizada, dados necessários ao funcionamento do acesso remoto — como imagem da tela, entradas de teclado e mouse e recursos que o usuário permitir — podem trafegar entre o computador atendido e o técnico, diretamente ou pelo relay privado. O comportamento e a política do componente RustDesk estão documentados no [projeto oficial](https://github.com/rustdesk/rustdesk).
 
+O componente oficial possui uma [política de privacidade própria](https://www.rustdesk.com/privacy/). Nesta distribuição, os servidores públicos do RustDesk são substituídos pela infraestrutura privada indicada acima; a Suporte TI não habilita telemetria própria no inicializador.
+
 O aplicativo não configura acesso desassistido, não instala serviço permanente e não mantém uma sessão depois que o usuário fecha a janela.
 
 Contato sobre privacidade: `lucas@suporteti.info`.

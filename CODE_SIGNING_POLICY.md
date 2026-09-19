@@ -1,11 +1,11 @@
 # Code signing policy
 
-O projeto pretende utilizar **assinatura gratuita fornecida por SignPath.io, com certificado da SignPath Foundation**, após sua aprovação.
+**Free code signing provided by SignPath.io, certificate by SignPath Foundation**, após a aprovação do projeto.
 
 ## Funções da equipe
 
-- Committer e revisor: Lucas — Suporte TI.
-- Aprovador das solicitações de assinatura: Lucas — Suporte TI.
+- Committers e revisores: [mantenedores da Suporte TI](https://github.com/suportetiroomt-web).
+- Aprovadores das solicitações de assinatura: [proprietários da conta institucional Suporte TI](https://github.com/suportetiroomt-web).
 
 Enquanto houver apenas um mantenedor, alterações externas deverão ser propostas por pull request e revisadas pelo mantenedor. Cada solicitação de assinatura exigirá aprovação manual.
 

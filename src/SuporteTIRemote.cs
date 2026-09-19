@@ -118,12 +118,12 @@ namespace SuporteTIRemote
             Controls.Add(statusLabel);
 
             var footer = new Label {
-                Text = "Servidor privado Suporte TI",
+                Text = "Servidor privado Suporte TI\nModo compatível temporário · restauração automática ao fechar",
                 ForeColor = Color.FromArgb(91, 118, 147),
-                Font = new Font("Segoe UI", 7.5F),
+                Font = new Font("Segoe UI", 7F),
                 TextAlign = ContentAlignment.MiddleCenter,
-                Location = new Point(12, 414),
-                Size = new Size(260, 18)
+                Location = new Point(8, 411),
+                Size = new Size(268, 30)
             };
             Controls.Add(footer);
 

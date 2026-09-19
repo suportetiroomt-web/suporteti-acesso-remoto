@@ -41,7 +41,11 @@ Consulte [PRIVACY.md](PRIVACY.md). O software não envia telemetria própria.
 
 ## Code signing policy
 
-Consulte [CODE_SIGNING_POLICY.md](CODE_SIGNING_POLICY.md). O objetivo é usar assinatura gratuita fornecida por SignPath.io, com certificado da SignPath Foundation, após aprovação do projeto.
+Consulte [CODE_SIGNING_POLICY.md](CODE_SIGNING_POLICY.md). **Free code signing provided by SignPath.io, certificate by SignPath Foundation**, após aprovação do projeto.
+
+## Download oficial
+
+A versão publicada para usuários está disponível na [página de acesso remoto da Suporte TI](https://suporteti.info/#acesso-remoto). Verifique a versão e o checksum antes da distribuição.
 
 ## Suporte e segurança
 
